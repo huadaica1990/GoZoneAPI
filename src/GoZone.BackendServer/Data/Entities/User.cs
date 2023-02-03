@@ -25,6 +25,7 @@ namespace GoZone.BackendServer.Data.Entities
         public string? Avatar { get; set; }
         #endregion
     }
+
     public class AppRole : IdentityRole
     {
         #region Basic
@@ -54,6 +55,7 @@ namespace GoZone.BackendServer.Data.Entities
         public string CommandId { get; set; }
         #endregion
     }
+
     [Table("Functions")]
     public class Function : ISortable
     {
@@ -84,6 +86,7 @@ namespace GoZone.BackendServer.Data.Entities
         public string Name { get; set; }
         #endregion
     }
+
     [Table("CommandInFunctions")]
     public class CommandInFunction
     {

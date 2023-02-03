@@ -9,6 +9,7 @@ namespace GoZone.BackendServer.Data.Entities
         #region Basic
         [Key, MaxLength(50), Column(TypeName = "varchar(50)")]
         public string Name { get; set; }
+        public string Value { get; set; }
         #endregion
     }
 }

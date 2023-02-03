@@ -1,2 +1,6 @@
 1. Sql diagram
 https://dbdiagram.io
+2. Code First
+GoZone.BackendServer
+Add-Migration Inital -OutputDir Data/Migrations
+Update-Database

@@ -1,4 +1,5 @@
-﻿using GoZone.BackendServer.Data.Interfaces;
+﻿using GoZone.BackendServer.Data.Enums;
+using GoZone.BackendServer.Data.Interfaces;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,17 +7,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace GoZone.BackendServer.Data.Entities
 {
     [Table("Products")]
-    public class Product : IDateTracking, ISortable, IHasCreate
+    public class Product : IDateTracking, ISortable, IHasCreate, ISwitchable
     {
         #region Auto
         public DateTime DateCreated { get; set; }
         public DateTime? DateModified { get; set; }
         public int SortOrder { get; set; }
-        [MaxLength(50), Column(TypeName = "varchar(50)")]
         public string CreateBy { get; set; }
-        [MaxLength(50), Column(TypeName = "varchar(50)")]
-        public string CreateUpdate { get; set; }
+        public string UpdateBy { get; set; }
+        public Status Status { get; set; }
         #endregion
+
         #region Basic
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -26,15 +27,14 @@ namespace GoZone.BackendServer.Data.Entities
         public decimal PriceFee { get; set; }
         [Required, DefaultValue(0)]
         public decimal PriceTax { get; set; }
-        [MaxLength(255), Column(TypeName = "varchar(255)")]
-        public string File { get; set; }
         #endregion
+
         #region Relationship
         #endregion
     }
 
     [Table("ProductTranslates")]
-    public class ProductTranslate
+    public class ProductTranslate : IMultiLanguage
     {
         #region Basic
         [Required, MaxLength(255)]
@@ -59,17 +59,19 @@ namespace GoZone.BackendServer.Data.Entities
         public DateTime? DateModified { get; set; }
         public int SortOrder { get; set; }
         #endregion
+
         #region Basic
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         #endregion
+
         #region Relationship
         public int? ParentId { get; set; }
         #endregion
     }
     
     [Table("ProductCategoryTranslates")]
-    public class ProductCategoryTranslate
+    public class ProductCategoryTranslate : IMultiLanguage
     {
         #region Basic
         [Required, MaxLength(255)]

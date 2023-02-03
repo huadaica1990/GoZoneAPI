@@ -1,7 +1,7 @@
 ﻿namespace GoZone.BackendServer.Data.Interfaces
 {
-    public interface IMultiLanguage<T>
+    public interface IMultiLanguage
     {
-        T LanguageId { get; set; }
+        string LanguageId { get; set; }
     }
 }
