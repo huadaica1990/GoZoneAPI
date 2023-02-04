@@ -1,100 +1,111 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using GoZone.BackendServer.Data.Enums;
 using GoZone.BackendServer.Data.Interfaces;
-using GoZone.BackendServer.Data.Enums;
-using System.ComponentModel;
+using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GoZone.BackendServer.Data.Entities
 {
     public class AppUser : IdentityUser, IDateTracking
     {
-        #region Auto
         public DateTime DateCreated { get; set; }
         public DateTime? DateModified { get; set; }
         public Status Status { get; set; }
-        #endregion
 
-        #region Basic
         [Required, MaxLength(50)]
         public string FirstName { get; set; }
+
         [Required, MaxLength(50)]
         public string LastName { get; set; }
+
         public DateTime? BirthDay { get; set; }
-        [MaxLength(255), Column(TypeName = "varchar(255)")]
+
+        [MaxLength(256), Column(TypeName = "varchar(256)")]
         public string? Avatar { get; set; }
-        #endregion
     }
 
     public class AppRole : IdentityRole
     {
-        #region Basic
-        [MaxLength(255)]
+        [MaxLength(256)]
         public string Description { get; set; }
-        #endregion
     }
 
     [Table("Permissions")]
     public class Permission
     {
-        #region Basic
         public Permission(string functionId, string roleId, string commandId)
         {
             FunctionId = functionId;
             RoleId = roleId;
             CommandId = commandId;
         }
-        #endregion
 
-        #region Relationship
-        [Required, MaxLength(50), Column(TypeName = "varchar(50)")]
-        public string FunctionId { get; set; }
-        [Required, MaxLength(50), Column(TypeName = "varchar(50)")]
+        [ForeignKey("RoleId")]
+        public virtual AppRole AppRole { get; set; }
+
+        [Required, Key, MaxLength(450), Column(Order = 0, TypeName = "nvarchar(450)")]
         public string RoleId { get; set; }
-        [Required, MaxLength(50), Column(TypeName = "varchar(50)")]
+
+        [ForeignKey("FunctionId")]
+        public virtual Function Function { get; set; }
+
+        [Required, Key, MaxLength(50), Column(Order = 1, TypeName = "varchar(50)")]
+        public string FunctionId { get; set; }
+
+        [ForeignKey("CommandId")]
+        public virtual Command Command { get; set; }
+
+        [Required, Key, MaxLength(50), Column(Order = 2, TypeName = "varchar(50)")]
         public string CommandId { get; set; }
-        #endregion
     }
 
     [Table("Functions")]
     public class Function : ISortable
     {
-        #region Auto
         public int SortOrder { get; set; }
-        #endregion
 
-        #region Basic
         [Key, MaxLength(50), Column(TypeName = "varchar(50)")]
         public string Id { get; set; }
-        [Required, MaxLength(255)]
+
+        [Required, MaxLength(256)]
         public string Name { get; set; }
+
         [Required, MaxLength(225)]
         public string Url { get; set; }
+
         [MaxLength(50), Column(TypeName = "varchar(50)")]
         public string ParentId { get; set; }
-        #endregion
+
+        public virtual ICollection<CommandInFunction> CommandInFunctions { get; set; }
+        public virtual ICollection<Permission> Permissions { get; set; }
     }
 
     [Table("Commands")]
     public class Command
     {
-        #region Basic
         [Key, MaxLength(50), Column(TypeName = "varchar(50)")]
         public string Id { get; set; }
 
         [Required, MaxLength(50)]
         public string Name { get; set; }
-        #endregion
+
+        public virtual ICollection<CommandInFunction> CommandInFunctions { get; set; }
+        public virtual ICollection<Permission> Permissions { get; set; }
     }
 
     [Table("CommandInFunctions")]
     public class CommandInFunction
     {
-        #region Relationship
-        [Required, MaxLength(50), Column(TypeName = "varchar(50)")]
+        [ForeignKey("CommandId")]
+        public virtual Command Command { get; set; }
+
+        [Required, MaxLength(50), Column(Order = 0, TypeName = "varchar(50)")]
         public string CommandId { get; set; }
-        [Required, MaxLength(50), Column(TypeName = "varchar(50)")]
+
+        [ForeignKey("FunctionId")]
+        public virtual Function Function { get; set; }
+
+        [Required, MaxLength(50), Column(Order = 1, TypeName = "varchar(50)")]
         public string FunctionId { get; set; }
-        #endregion
     }
 }

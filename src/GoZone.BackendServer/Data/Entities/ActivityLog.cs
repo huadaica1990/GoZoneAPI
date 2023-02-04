@@ -21,7 +21,7 @@ namespace GoZone.BackendServer.Data.Entities
         public string EntityName { get; set; }
         [Required, MaxLength(50), Column(TypeName = "varchar(50)")]
         public string EntityId { get; set; }
-        [MaxLength(255), Column(TypeName = "varchar(255)")]
+        [MaxLength(256), Column(TypeName = "varchar(256)")]
         public string Url { get; set; }
         [MaxLength(500)]
         public string Description { get; set; }

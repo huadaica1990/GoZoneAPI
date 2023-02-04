@@ -29,7 +29,7 @@ namespace GoZone.BackendServer.Data.Migrations
                     Action = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     EntityName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     EntityId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Url = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                    Url = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     UserId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
                 },
@@ -47,7 +47,7 @@ namespace GoZone.BackendServer.Data.Migrations
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateModified = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Content = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
                 },
                 constraints: table =>
@@ -60,7 +60,7 @@ namespace GoZone.BackendServer.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -81,7 +81,7 @@ namespace GoZone.BackendServer.Data.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     BirthDay = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Avatar = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true),
+                    Avatar = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -100,18 +100,6 @@ namespace GoZone.BackendServer.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CommandInFunctions",
-                columns: table => new
-                {
-                    CommandId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    FunctionId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CommandInFunctions", x => new { x.CommandId, x.FunctionId });
                 });
 
             migrationBuilder.CreateTable(
@@ -135,8 +123,8 @@ namespace GoZone.BackendServer.Data.Migrations
                     DateModified = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    ContentBody = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ContactStatus = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -150,7 +138,7 @@ namespace GoZone.BackendServer.Data.Migrations
                 {
                     Id = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     SortOrder = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Url = table.Column<string>(type: "nvarchar(225)", maxLength: 225, nullable: false),
                     ParentId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
                 },
@@ -180,48 +168,13 @@ namespace GoZone.BackendServer.Data.Migrations
                     Id = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Value = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Avatar = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                    Avatar = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     IsDefault = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Languages", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OrderDetails",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    ProductName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    File = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PriceFee = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PriceTax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Quanity = table.Column<int>(type: "int", nullable: false),
-                    OrderId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OrderImages",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Src = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    OrderId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderImages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -233,28 +186,19 @@ namespace GoZone.BackendServer.Data.Migrations
                     DateModified = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     OrderStatus = table.Column<int>(type: "int", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MoneyPaid = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MoneyTax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MoneyRecevied = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OwnerId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     CustomerId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Permissions",
-                columns: table => new
-                {
-                    FunctionId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    RoleId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    CommandId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Permissions", x => new { x.RoleId, x.FunctionId, x.CommandId });
                 });
 
             migrationBuilder.CreateTable(
@@ -266,37 +210,17 @@ namespace GoZone.BackendServer.Data.Migrations
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateModified = table.Column<DateTime>(type: "datetime2", nullable: true),
                     SortOrder = table.Column<int>(type: "int", nullable: false),
+                    NoDeleted = table.Column<bool>(type: "bit", nullable: false),
                     ParentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductCategories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductCategoryTranslates",
-                columns: table => new
-                {
-                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProductCategoryId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductCategoryTranslates", x => new { x.LanguageId, x.ProductCategoryId });
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductInCategories",
-                columns: table => new
-                {
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    ProductCategoryId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductInCategories", x => new { x.ProductId, x.ProductCategoryId });
+                    table.ForeignKey(
+                        name: "FK_ProductCategories_ProductCategories_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "ProductCategories",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -311,6 +235,7 @@ namespace GoZone.BackendServer.Data.Migrations
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PriceFee = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PriceTax = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
@@ -318,20 +243,6 @@ namespace GoZone.BackendServer.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductTranslates",
-                columns: table => new
-                {
-                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductTranslates", x => new { x.LanguageId, x.ProductId });
                 });
 
             migrationBuilder.CreateTable(
@@ -346,33 +257,11 @@ namespace GoZone.BackendServer.Data.Migrations
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SeoSchema = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SeoRobot = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SeoPageTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SeoAlias = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SeoKeywords = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SeoDescription = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    SeoRobot = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_StaticPages", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StaticPageTranslates",
-                columns: table => new
-                {
-                    LanguageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    StaticPageId = table.Column<int>(type: "int", nullable: false),
-                    SeoPageTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SeoAlias = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SeoKeywords = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SeoDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StaticPageTranslates", x => new { x.LanguageId, x.StaticPageId });
                 });
 
             migrationBuilder.CreateTable(
@@ -514,6 +403,215 @@ namespace GoZone.BackendServer.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CommandInFunctions",
+                columns: table => new
+                {
+                    CommandId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    FunctionId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CommandInFunctions", x => new { x.CommandId, x.FunctionId });
+                    table.ForeignKey(
+                        name: "FK_CommandInFunctions_Commands_CommandId",
+                        column: x => x.CommandId,
+                        principalTable: "Commands",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CommandInFunctions_Functions_FunctionId",
+                        column: x => x.FunctionId,
+                        principalTable: "Functions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Permissions",
+                columns: table => new
+                {
+                    RoleId = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
+                    FunctionId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    CommandId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permissions", x => new { x.RoleId, x.FunctionId, x.CommandId });
+                    table.ForeignKey(
+                        name: "FK_Permissions_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Permissions_Commands_CommandId",
+                        column: x => x.CommandId,
+                        principalTable: "Commands",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Permissions_Functions_FunctionId",
+                        column: x => x.FunctionId,
+                        principalTable: "Functions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    File = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PriceFee = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PriceTax = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Quanity = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderImages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Src = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    OrderId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderImages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderImages_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductCategoryTranslates",
+                columns: table => new
+                {
+                    LanguageId = table.Column<string>(type: "varchar(50)", nullable: false),
+                    ProductCategoryId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductCategoryTranslates", x => new { x.LanguageId, x.ProductCategoryId });
+                    table.ForeignKey(
+                        name: "FK_ProductCategoryTranslates_Languages_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Languages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductCategoryTranslates_ProductCategories_ProductCategoryId",
+                        column: x => x.ProductCategoryId,
+                        principalTable: "ProductCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductInCategories",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ProductCategoryId = table.Column<int>(type: "int", nullable: false),
+                    IsDefault = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductInCategories", x => new { x.ProductId, x.ProductCategoryId });
+                    table.ForeignKey(
+                        name: "FK_ProductInCategories_ProductCategories_ProductCategoryId",
+                        column: x => x.ProductCategoryId,
+                        principalTable: "ProductCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductInCategories_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductTranslates",
+                columns: table => new
+                {
+                    LanguageId = table.Column<string>(type: "varchar(50)", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductTranslates", x => new { x.LanguageId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_ProductTranslates_Languages_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Languages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductTranslates_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StaticPageTranslates",
+                columns: table => new
+                {
+                    LanguageId = table.Column<string>(type: "varchar(50)", nullable: false),
+                    StaticPageId = table.Column<int>(type: "int", nullable: false),
+                    SeoPageTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SeoAlias = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SeoKeywords = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SeoDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StaticPageTranslates", x => new { x.LanguageId, x.StaticPageId });
+                    table.ForeignKey(
+                        name: "FK_StaticPageTranslates_Languages_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Languages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StaticPageTranslates_StaticPages_StaticPageId",
+                        column: x => x.StaticPageId,
+                        principalTable: "StaticPages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AnnouncementUsers_AnnouncementId",
                 table: "AnnouncementUsers",
@@ -557,6 +655,56 @@ namespace GoZone.BackendServer.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CommandInFunctions_FunctionId",
+                table: "CommandInFunctions",
+                column: "FunctionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_OrderId",
+                table: "OrderDetails",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderImages_OrderId",
+                table: "OrderImages",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Permissions_CommandId",
+                table: "Permissions",
+                column: "CommandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Permissions_FunctionId",
+                table: "Permissions",
+                column: "FunctionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductCategories_ParentId",
+                table: "ProductCategories",
+                column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductCategoryTranslates_ProductCategoryId",
+                table: "ProductCategoryTranslates",
+                column: "ProductCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductInCategories_ProductCategoryId",
+                table: "ProductInCategories",
+                column: "ProductCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductTranslates_ProductId",
+                table: "ProductTranslates",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StaticPageTranslates_StaticPageId",
+                table: "StaticPageTranslates",
+                column: "StaticPageId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -586,19 +734,10 @@ namespace GoZone.BackendServer.Data.Migrations
                 name: "CommandInFunctions");
 
             migrationBuilder.DropTable(
-                name: "Commands");
-
-            migrationBuilder.DropTable(
                 name: "Contacts");
 
             migrationBuilder.DropTable(
-                name: "Functions");
-
-            migrationBuilder.DropTable(
                 name: "IdentityRole");
-
-            migrationBuilder.DropTable(
-                name: "Languages");
 
             migrationBuilder.DropTable(
                 name: "OrderDetails");
@@ -607,13 +746,7 @@ namespace GoZone.BackendServer.Data.Migrations
                 name: "OrderImages");
 
             migrationBuilder.DropTable(
-                name: "Orders");
-
-            migrationBuilder.DropTable(
                 name: "Permissions");
-
-            migrationBuilder.DropTable(
-                name: "ProductCategories");
 
             migrationBuilder.DropTable(
                 name: "ProductCategoryTranslates");
@@ -622,13 +755,7 @@ namespace GoZone.BackendServer.Data.Migrations
                 name: "ProductInCategories");
 
             migrationBuilder.DropTable(
-                name: "Products");
-
-            migrationBuilder.DropTable(
                 name: "ProductTranslates");
-
-            migrationBuilder.DropTable(
-                name: "StaticPages");
 
             migrationBuilder.DropTable(
                 name: "StaticPageTranslates");
@@ -640,10 +767,31 @@ namespace GoZone.BackendServer.Data.Migrations
                 name: "Announcements");
 
             migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Commands");
+
+            migrationBuilder.DropTable(
+                name: "Functions");
+
+            migrationBuilder.DropTable(
+                name: "ProductCategories");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Languages");
+
+            migrationBuilder.DropTable(
+                name: "StaticPages");
 
             migrationBuilder.DropSequence(
                 name: "ProductCategorySequence");

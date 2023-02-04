@@ -18,12 +18,55 @@ namespace GoZone.BackendServer.Data.Entities
 
         #region Basic
         [Key, MaxLength(50), Column(TypeName = "varchar(50)")]
-        public string Id { get; set; }
-        [Required, MaxLength(255)]
+        public Guid Id { get; set; }
+        [Required, MaxLength(256)]
         public string Name { get; set; }
         [MaxLength(500)]
         public string Description { get; set; }
         public OrderStatus OrderStatus { get; set; }
+        #endregion
+        #region Price
+        public decimal TotalAmount { get; set; }
+        private decimal _moneyPaid;
+        public decimal MoneyPaid
+        {
+            get
+            {
+                return _moneyPaid;
+            }
+            set
+            {
+                _moneyPaid = value;
+                _moneyRecevied = _moneyPaid + _moneyTax;
+            }
+        }
+
+        private decimal _moneyTax;
+        public decimal MoneyTax
+        {
+            get
+            {
+                return _moneyTax;
+            }
+            set
+            {
+                _moneyTax = value;
+                _moneyRecevied = _moneyPaid + _moneyTax;
+            }
+        }
+
+        private decimal _moneyRecevied;
+        public decimal MoneyRecevied
+        {
+            get
+            {
+                return _moneyRecevied;
+            }
+            private set
+            {
+                _moneyRecevied = value;
+            }
+        }
         #endregion
 
         #region Relationship
@@ -31,7 +74,11 @@ namespace GoZone.BackendServer.Data.Entities
         public string OwnerId { get; set; }
         [Required, MaxLength(50), Column(TypeName = "varchar(50)")]
         public string CustomerId { get; set; }
+
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<OrderImage> OrderImages { get; set; }
         #endregion
+
     }
 
     [Table("OrderImages")]
@@ -40,13 +87,16 @@ namespace GoZone.BackendServer.Data.Entities
         #region Basic
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required, MaxLength(255)]
+        [Required, MaxLength(256)]
         public string Src { get; set; }
         #endregion
 
         #region Relationship
+
+        [ForeignKey("OrderId")]
+        public virtual Order Order { get; set; }
         [Required, MaxLength(50), Column(TypeName = "varchar(50)")]
-        public string OrderId { get; set; }
+        public Guid OrderId { get; set; }
         #endregion
     }
 
@@ -60,9 +110,9 @@ namespace GoZone.BackendServer.Data.Entities
         public string Description { get; set; }
         [Required]
         public int ProductId { get; set; }
-        [Required, MaxLength(255)]
+        [Required, MaxLength(256)]
         public string ProductName { get; set; }
-        [MaxLength(255)]
+        [MaxLength(256)]
         public string File { get; set; }
         [Required, DefaultValue(0)]
         public decimal Price { get; set; }
@@ -74,8 +124,10 @@ namespace GoZone.BackendServer.Data.Entities
         #endregion
 
         #region Relationship
+        [ForeignKey("OrderId")]
+        public virtual Order Order { get; set; }
         [Required, MaxLength(50), Column(TypeName = "varchar(50)")]
-        public string OrderId { get; set; }
+        public Guid OrderId { get; set; }
         #endregion
     }
 }

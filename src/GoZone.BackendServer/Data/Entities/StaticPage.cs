@@ -14,6 +14,7 @@ namespace GoZone.BackendServer.Data.Entities
         public int SortOrder { get; set; }
         public string CreateBy { get; set; }
         public string UpdateBy { get; set; }
+
         #endregion
 
         #region Basic
@@ -21,13 +22,12 @@ namespace GoZone.BackendServer.Data.Entities
         public int Id { get; set; }
         public string SeoSchema { get; set; }
         public string SeoRobot { get; set; }
+
         #endregion
 
         #region Relationship
-        public string SeoPageTitle { get; set; }
-        public string SeoAlias { get; set; }
-        public string SeoKeywords { get; set; }
-        public string SeoDescription { get; set; }
+        public virtual ICollection<StaticPageTranslate> StaticPageTranslates { get; set; }
+
         #endregion
     }
     [Table("StaticPageTranslates")]
@@ -41,16 +41,21 @@ namespace GoZone.BackendServer.Data.Entities
         #endregion
 
         #region Basic
-        [Required, MaxLength(255)]
+        [Required, MaxLength(256)]
         public string Name { get; set; }
         [MaxLength(500)]
         public string Description { get; set; }
         #endregion
 
         #region Relationship
-        [Required, Range(1, Double.PositiveInfinity)]
+        [ForeignKey("LanguageId")]
+        public virtual Language Languages { get; set; }
+        [Required, Key, Column(Order = 0)]
         public string LanguageId { get; set; }
-        [Required, Range(1, Double.PositiveInfinity)]
+
+        [ForeignKey("StaticPageId")]
+        public virtual StaticPage StaticPages { get; set; }
+        [Required, Key, Column(Order = 1)]
         public int StaticPageId { get; set; }
         #endregion
     }

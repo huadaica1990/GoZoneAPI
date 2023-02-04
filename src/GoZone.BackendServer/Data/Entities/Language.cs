@@ -15,7 +15,7 @@ namespace GoZone.BackendServer.Data.Entities
         public string Name { get; set; }
         [Required, MaxLength(50)]
         public string Value { get; set; }
-        [MaxLength(255), Column(TypeName = "varchar(255)")]
+        [MaxLength(256), Column(TypeName = "varchar(256)")]
         public string Avatar { get; set; }
         public Status Status { get; set; }
         public bool IsDefault { get; set; }

@@ -7,7 +7,7 @@ namespace GoZone.BackendServer.Data.Entities
     public class SystemConfig
     {
         #region Basic
-        [Key, MaxLength(50), Column(TypeName = "varchar(50)")]
+        [Required, Key, MaxLength(50), Column(TypeName = "varchar(50)")]
         public string Name { get; set; }
         public string Value { get; set; }
         #endregion

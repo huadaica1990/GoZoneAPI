@@ -64,8 +64,8 @@ namespace GoZone.BackendServer.Data.Migrations
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -98,8 +98,8 @@ namespace GoZone.BackendServer.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -146,8 +146,8 @@ namespace GoZone.BackendServer.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
@@ -178,8 +178,8 @@ namespace GoZone.BackendServer.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Avatar")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<DateTime?>("BirthDay")
                         .HasColumnType("datetime2");
@@ -280,13 +280,17 @@ namespace GoZone.BackendServer.Data.Migrations
                 {
                     b.Property<string>("CommandId")
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnOrder(0);
 
                     b.Property<string>("FunctionId")
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnOrder(1);
 
                     b.HasKey("CommandId", "FunctionId");
+
+                    b.HasIndex("FunctionId");
 
                     b.ToTable("CommandInFunctions");
                 });
@@ -294,13 +298,14 @@ namespace GoZone.BackendServer.Data.Migrations
             modelBuilder.Entity("GoZone.BackendServer.Data.Entities.Contact", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
                     b.Property<int>("ContactStatus")
                         .HasColumnType("int");
 
-                    b.Property<string>("Content")
+                    b.Property<string>("ContentBody")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -316,8 +321,8 @@ namespace GoZone.BackendServer.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("UpdateBy")
                         .IsRequired()
@@ -336,8 +341,8 @@ namespace GoZone.BackendServer.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("ParentId")
                         .IsRequired()
@@ -365,8 +370,8 @@ namespace GoZone.BackendServer.Data.Migrations
 
                     b.Property<string>("Avatar")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
@@ -392,6 +397,7 @@ namespace GoZone.BackendServer.Data.Migrations
             modelBuilder.Entity("GoZone.BackendServer.Data.Entities.Order", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
@@ -415,10 +421,19 @@ namespace GoZone.BackendServer.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<decimal>("MoneyPaid")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MoneyRecevied")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MoneyTax")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
@@ -427,6 +442,9 @@ namespace GoZone.BackendServer.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UpdateBy")
                         .IsRequired()
@@ -452,8 +470,8 @@ namespace GoZone.BackendServer.Data.Migrations
 
                     b.Property<string>("File")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("OrderId")
                         .IsRequired()
@@ -474,13 +492,15 @@ namespace GoZone.BackendServer.Data.Migrations
 
                     b.Property<string>("ProductName")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("Quanity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -500,10 +520,12 @@ namespace GoZone.BackendServer.Data.Migrations
 
                     b.Property<string>("Src")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderImages");
                 });
@@ -511,18 +533,25 @@ namespace GoZone.BackendServer.Data.Migrations
             modelBuilder.Entity("GoZone.BackendServer.Data.Entities.Permission", b =>
                 {
                     b.Property<string>("RoleId")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(0);
 
                     b.Property<string>("FunctionId")
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("CommandId")
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnOrder(2);
 
                     b.HasKey("RoleId", "FunctionId", "CommandId");
+
+                    b.HasIndex("CommandId");
+
+                    b.HasIndex("FunctionId");
 
                     b.ToTable("Permissions");
                 });
@@ -544,6 +573,9 @@ namespace GoZone.BackendServer.Data.Migrations
 
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -583,6 +615,9 @@ namespace GoZone.BackendServer.Data.Migrations
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("NoDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
 
@@ -591,16 +626,20 @@ namespace GoZone.BackendServer.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ParentId");
+
                     b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("GoZone.BackendServer.Data.Entities.ProductCategoryTranslate", b =>
                 {
                     b.Property<string>("LanguageId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnOrder(0);
 
                     b.Property<int>("ProductCategoryId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -609,10 +648,12 @@ namespace GoZone.BackendServer.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("LanguageId", "ProductCategoryId");
+
+                    b.HasIndex("ProductCategoryId");
 
                     b.ToTable("ProductCategoryTranslates");
                 });
@@ -620,12 +661,19 @@ namespace GoZone.BackendServer.Data.Migrations
             modelBuilder.Entity("GoZone.BackendServer.Data.Entities.ProductInCategory", b =>
                 {
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
 
                     b.Property<int>("ProductCategoryId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
 
                     b.HasKey("ProductId", "ProductCategoryId");
+
+                    b.HasIndex("ProductCategoryId");
 
                     b.ToTable("ProductInCategories");
                 });
@@ -633,10 +681,12 @@ namespace GoZone.BackendServer.Data.Migrations
             modelBuilder.Entity("GoZone.BackendServer.Data.Entities.ProductTranslate", b =>
                 {
                     b.Property<string>("LanguageId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnOrder(0);
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -645,10 +695,12 @@ namespace GoZone.BackendServer.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("LanguageId", "ProductId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductTranslates");
                 });
@@ -670,22 +722,6 @@ namespace GoZone.BackendServer.Data.Migrations
 
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("SeoAlias")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SeoDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SeoKeywords")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SeoPageTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SeoRobot")
                         .IsRequired()
@@ -710,10 +746,12 @@ namespace GoZone.BackendServer.Data.Migrations
             modelBuilder.Entity("GoZone.BackendServer.Data.Entities.StaticPageTranslate", b =>
                 {
                     b.Property<string>("LanguageId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnOrder(0);
 
                     b.Property<int>("StaticPageId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -722,8 +760,8 @@ namespace GoZone.BackendServer.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("SeoAlias")
                         .IsRequired()
@@ -742,6 +780,8 @@ namespace GoZone.BackendServer.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("LanguageId", "StaticPageId");
+
+                    b.HasIndex("StaticPageId");
 
                     b.ToTable("StaticPageTranslates");
                 });
@@ -899,6 +939,159 @@ namespace GoZone.BackendServer.Data.Migrations
                     b.Navigation("Announcement");
                 });
 
+            modelBuilder.Entity("GoZone.BackendServer.Data.Entities.CommandInFunction", b =>
+                {
+                    b.HasOne("GoZone.BackendServer.Data.Entities.Command", "Command")
+                        .WithMany("CommandInFunctions")
+                        .HasForeignKey("CommandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GoZone.BackendServer.Data.Entities.Function", "Function")
+                        .WithMany("CommandInFunctions")
+                        .HasForeignKey("FunctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Command");
+
+                    b.Navigation("Function");
+                });
+
+            modelBuilder.Entity("GoZone.BackendServer.Data.Entities.OrderDetail", b =>
+                {
+                    b.HasOne("GoZone.BackendServer.Data.Entities.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("GoZone.BackendServer.Data.Entities.OrderImage", b =>
+                {
+                    b.HasOne("GoZone.BackendServer.Data.Entities.Order", "Order")
+                        .WithMany("OrderImages")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("GoZone.BackendServer.Data.Entities.Permission", b =>
+                {
+                    b.HasOne("GoZone.BackendServer.Data.Entities.Command", "Command")
+                        .WithMany("Permissions")
+                        .HasForeignKey("CommandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GoZone.BackendServer.Data.Entities.Function", "Function")
+                        .WithMany("Permissions")
+                        .HasForeignKey("FunctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GoZone.BackendServer.Data.Entities.AppRole", "AppRole")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppRole");
+
+                    b.Navigation("Command");
+
+                    b.Navigation("Function");
+                });
+
+            modelBuilder.Entity("GoZone.BackendServer.Data.Entities.ProductCategory", b =>
+                {
+                    b.HasOne("GoZone.BackendServer.Data.Entities.ProductCategory", "ParentCategory")
+                        .WithMany("ChildCategories")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("ParentCategory");
+                });
+
+            modelBuilder.Entity("GoZone.BackendServer.Data.Entities.ProductCategoryTranslate", b =>
+                {
+                    b.HasOne("GoZone.BackendServer.Data.Entities.Language", "Languages")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GoZone.BackendServer.Data.Entities.ProductCategory", "ProductCategories")
+                        .WithMany("ProductCategoryTranslates")
+                        .HasForeignKey("ProductCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Languages");
+
+                    b.Navigation("ProductCategories");
+                });
+
+            modelBuilder.Entity("GoZone.BackendServer.Data.Entities.ProductInCategory", b =>
+                {
+                    b.HasOne("GoZone.BackendServer.Data.Entities.ProductCategory", "ProductCategory")
+                        .WithMany("ProductInCategories")
+                        .HasForeignKey("ProductCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GoZone.BackendServer.Data.Entities.Product", "Product")
+                        .WithMany("ProductInCategories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ProductCategory");
+                });
+
+            modelBuilder.Entity("GoZone.BackendServer.Data.Entities.ProductTranslate", b =>
+                {
+                    b.HasOne("GoZone.BackendServer.Data.Entities.Language", "Languages")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GoZone.BackendServer.Data.Entities.Product", "Products")
+                        .WithMany("ProductTranslates")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Languages");
+
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("GoZone.BackendServer.Data.Entities.StaticPageTranslate", b =>
+                {
+                    b.HasOne("GoZone.BackendServer.Data.Entities.Language", "Languages")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GoZone.BackendServer.Data.Entities.StaticPage", "StaticPages")
+                        .WithMany("StaticPageTranslates")
+                        .HasForeignKey("StaticPageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Languages");
+
+                    b.Navigation("StaticPages");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("GoZone.BackendServer.Data.Entities.AppRole", null)
@@ -953,6 +1146,48 @@ namespace GoZone.BackendServer.Data.Migrations
             modelBuilder.Entity("GoZone.BackendServer.Data.Entities.Announcement", b =>
                 {
                     b.Navigation("AnnouncementUsers");
+                });
+
+            modelBuilder.Entity("GoZone.BackendServer.Data.Entities.Command", b =>
+                {
+                    b.Navigation("CommandInFunctions");
+
+                    b.Navigation("Permissions");
+                });
+
+            modelBuilder.Entity("GoZone.BackendServer.Data.Entities.Function", b =>
+                {
+                    b.Navigation("CommandInFunctions");
+
+                    b.Navigation("Permissions");
+                });
+
+            modelBuilder.Entity("GoZone.BackendServer.Data.Entities.Order", b =>
+                {
+                    b.Navigation("OrderDetails");
+
+                    b.Navigation("OrderImages");
+                });
+
+            modelBuilder.Entity("GoZone.BackendServer.Data.Entities.Product", b =>
+                {
+                    b.Navigation("ProductInCategories");
+
+                    b.Navigation("ProductTranslates");
+                });
+
+            modelBuilder.Entity("GoZone.BackendServer.Data.Entities.ProductCategory", b =>
+                {
+                    b.Navigation("ChildCategories");
+
+                    b.Navigation("ProductCategoryTranslates");
+
+                    b.Navigation("ProductInCategories");
+                });
+
+            modelBuilder.Entity("GoZone.BackendServer.Data.Entities.StaticPage", b =>
+                {
+                    b.Navigation("StaticPageTranslates");
                 });
 #pragma warning restore 612, 618
         }

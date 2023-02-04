@@ -7,9 +7,9 @@ namespace GoZone.BackendServer.Data.Interfaces
     {
         [Required, StringLength(70)]
         string SeoPageTitle { get; set; }
-        [Required, StringLength(255), Column(TypeName = "varchar(255)")]
+        [Required, StringLength(256), Column(TypeName = "varchar(256)")]
         string SeoAlias { get; set; }
-        [StringLength(255)]
+        [StringLength(256)]
         string SeoKeywords { get; set; }
         [StringLength(160)]
         string SeoDescription { get; set; }

@@ -14,13 +14,14 @@ namespace GoZone.BackendServer.Data.Entities
         public string CreateBy { get; set; }
         public string UpdateBy { get; set; }
         #endregion
+
         #region Basic
         [Key, MaxLength(50), Column(TypeName = "varchar(50)")]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
-        [Required, MaxLength(255)]
+        [Required, MaxLength(256)]
         public string Name { get; set; }
-        public string Content { get; set; }
+        public string ContentBody { get; set; }
         public ContactStatus ContactStatus { get; set; }
         #endregion
     }
