@@ -10,7 +10,7 @@ namespace GoZone.BackendServer.Data.Entities
     {
         public DateTime DateCreated { get; set; }
         public DateTime? DateModified { get; set; }
-        public Status Status { get; set; }
+        public UserStatus Status { get; set; }
 
         [Required, MaxLength(50)]
         public string FirstName { get; set; }
