@@ -1,19 +1,22 @@
 ﻿using GoZone.BackendServer.Controllers;
+using GoZone.ViewModels;
 using GoZone.ViewModels.Systems;
+using KnowledgeSpace.BackendServer.UnitTest.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GoZone.BackendServer.UnitTest.Controllers
 {
     public class RoleControllerTest
     {
         private readonly Mock<RoleManager<IdentityRole>> _mockRoleManager;
+        private List<IdentityRole>  _roleSources = new List<IdentityRole>() {
+            new IdentityRole("test1"),
+            new IdentityRole("test2"),
+            new IdentityRole("test3"),
+            new IdentityRole("test4")
+        };
         public RoleControllerTest() {
             var roleStore = new Mock<IRoleStore<IdentityRole>>();
             _mockRoleManager = new Mock<RoleManager<IdentityRole>>(roleStore.Object, null, null, null, null);
@@ -35,7 +38,7 @@ namespace GoZone.BackendServer.UnitTest.Controllers
             var result = await rolesController.PostRole(new ViewModels.Systems.RoleVm()
             {
                 Id = "test",
-                 Name = "Test"
+                Name = "Test"
             });
 
             Assert.NotNull(result);
@@ -43,7 +46,7 @@ namespace GoZone.BackendServer.UnitTest.Controllers
         }
 
         [Fact]
-        public async Task PostRole_ValidInput_Fail()
+        public async Task PostRole_ValidInput_Failed()
         {
             _mockRoleManager.Setup(m => m.CreateAsync(It.IsAny<IdentityRole>()))
                 .ReturnsAsync(IdentityResult.Failed(new IdentityError[] {}));
@@ -59,28 +62,90 @@ namespace GoZone.BackendServer.UnitTest.Controllers
         }
 
         [Fact]
-        public async Task GetRole_ValidInput_Success()
+        public async Task GetRoles_HasData_ReturnSuccess()
         {
+            var roles = _roleSources.AsAsyncQueryable();
             _mockRoleManager.Setup(m => m.Roles)
-                .Returns(new List<IdentityRole>()
-                {
-                    new IdentityRole("test1"),
-                    new IdentityRole("test2")
-                }.AsQueryable());
+                .Returns(roles);
             var rolesController = new RolesController(_mockRoleManager.Object);
             var result = await rolesController.GetRoles();
             var okResult = result as OkObjectResult;
-            Assert.True((okResult.Value as List<RoleVm>).Count > 0);
+            var roleVms = okResult.Value as IEnumerable<RoleVm>;
+            Assert.True(roleVms.Count() > 0);
         }
+        
         [Fact]
-        public async Task GetRole_ValidInput_Fail()
+        public async Task GetRoles_ThrowException_Failed()
         {
             _mockRoleManager.Setup(m => m.Roles).Throws<Exception>();
             var rolesController = new RolesController(_mockRoleManager.Object);
-            var result = await rolesController.GetRoles();
 
-            await Assert.ThrowsAny<Exception>(async ()=> await rolesController.GetRoles());
+            await Assert.ThrowsAnyAsync<Exception>(async ()=> await rolesController.GetRoles());
         }
+
+
+        [Fact]
+        public async Task GetRolesPaging_NoFillter_ReturnSuccess()
+        {
+            var roles = _roleSources.AsAsyncQueryable();
+            _mockRoleManager.Setup(m => m.Roles)
+                .Returns(roles);
+            var rolesController = new RolesController(_mockRoleManager.Object);
+            var result = await rolesController.GetRolesPaging(null,1,2);
+            var okResult = result as OkObjectResult;
+            var roleVms = okResult.Value as Pagination<RoleVm>;
+            Assert.Equal(4, roleVms.TotalRecords);
+            Assert.Equal(2, roleVms.Items.Count);
+        }
+
+        [Fact]
+        public async Task GetRolesPaging_HasFillter_ReturnSuccess()
+        {
+            var roles = _roleSources.AsAsyncQueryable();
+            _mockRoleManager.Setup(m => m.Roles)
+                .Returns(roles);
+            var rolesController = new RolesController(_mockRoleManager.Object);
+            var result = await rolesController.GetRolesPaging("test3", 1, 2);
+            var okResult = result as OkObjectResult;
+            var roleVms = okResult.Value as Pagination<RoleVm>;
+            Assert.Equal(1, roleVms.TotalRecords);
+            Assert.Equal(1, roleVms.Items.Count);
+        }
+        [Fact]
+        public async Task GetRolesPaging_ThrowException_Failed()
+        {
+            _mockRoleManager.Setup(m => m.Roles).Throws<Exception>();
+            var rolesController = new RolesController(_mockRoleManager.Object);
+            await Assert.ThrowsAnyAsync<Exception>(async () => await rolesController.GetRolesPaging(null,1,2));
+        }
+
+        [Fact]
+        public async Task GetById_HasData_ReturnSuccess()
+        {
+            var roles = _roleSources.AsAsyncQueryable();
+            _mockRoleManager.Setup( m => m.FindByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync(new IdentityRole()
+                {
+                    Id = "test1",
+                    Name = "test1"
+                });
+            var rolesController = new RolesController(_mockRoleManager.Object);
+            var result = await rolesController.GetById("test1");
+            var okResult = result as OkObjectResult;
+            Assert.NotNull(okResult);
+            var roleVms = okResult.Value as RoleVm;
+            Assert.Equal("test1", roleVms.Name);
+        }
+        [Fact]
+        public async Task GetById_ThrowException_Failed()
+        {
+            _mockRoleManager.Setup(m => m.FindByIdAsync(It.IsAny<string>())).Throws<Exception>();
+            var rolesController = new RolesController(_mockRoleManager.Object);
+            await Assert.ThrowsAnyAsync<Exception>(async () => await rolesController.GetById("test1"));
+        }
+
+
+
 
 
     }

@@ -45,19 +45,18 @@ namespace GoZone.BackendServer.Controllers
         [HttpGet]
         public async Task<IActionResult> GetRoles()
         {
-            var role = await _roleManager.Roles
-                .Select(m => new RoleVm()
+            var roles = await _roleManager.Roles.ToListAsync();
+            var roleVms = roles.Select(m => new RoleVm()
                 {
                     Id = m.Id,
                     Name = m.Name
-                })
-                .ToListAsync();
-            return Ok(role);
+                });
+            return Ok(roleVms);
         }
 
         // URL: GET api/roles/?filter={filter}&page=1&pagesize=10
         [HttpGet]
-        public async Task<IActionResult> GetRoles(string filter,int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetRolesPaging(string filter,int page = 1, int pageSize = 10)
         {
             var query = _roleManager.Roles;
             if(!string.IsNullOrEmpty(filter))
