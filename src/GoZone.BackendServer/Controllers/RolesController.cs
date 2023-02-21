@@ -96,7 +96,7 @@ namespace GoZone.BackendServer.Controllers
 
         // URL: PUT api/roles/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutById(string id, [FromBody]RoleVm roleVm)
+        public async Task<IActionResult> PutRole(string id, [FromBody]RoleVm roleVm)
         {
             if (id != roleVm.Id)
                 return BadRequest();
@@ -118,10 +118,8 @@ namespace GoZone.BackendServer.Controllers
 
         // URL: DELETE api/roles/{id}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteById(string id, [FromBody] RoleVm roleVm)
+        public async Task<IActionResult> DeleteRole(string id)
         {
-            if (id != roleVm.Id)
-                return BadRequest();
             var role = await _roleManager.FindByIdAsync(id);
             if (role == null)
                 return NotFound();

@@ -144,8 +144,81 @@ namespace GoZone.BackendServer.UnitTest.Controllers
             await Assert.ThrowsAnyAsync<Exception>(async () => await rolesController.GetById("test1"));
         }
 
+        [Fact]
+        public async Task PutRole_ValidInput_Success()
+        {
+            _mockRoleManager.Setup(m => m.FindByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync(new IdentityRole()
+                {
+                    Id = "test",
+                    Name = "test"
+                });
+            _mockRoleManager.Setup(m => m.UpdateAsync(It.IsAny<IdentityRole>()))
+                .ReturnsAsync(IdentityResult.Success);
+            var rolesController = new RolesController(_mockRoleManager.Object);
+            var result = await rolesController.PutRole("test", new RoleVm()
+            {
+                Id= "test",
+                Name= "test",
+            });
+            Assert.NotNull(result);
+            Assert.IsType<NoContentResult>(result);
+        }
+
+        [Fact]
+        public async Task PutRole_ValidInput_Failed()
+        {
+            _mockRoleManager.Setup(m => m.FindByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync(new IdentityRole()
+                {
+                    Id = "test",
+                    Name = "test"
+                });
+            _mockRoleManager.Setup(m => m.UpdateAsync(It.IsAny<IdentityRole>()))
+                .ReturnsAsync(IdentityResult.Failed(new IdentityError[] { }));
+            var rolesController = new RolesController(_mockRoleManager.Object);
+            var result = await rolesController.PutRole("test", new RoleVm()
+            {
+                Id = "test",
+                Name = "test",
+            });
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
 
 
+
+        [Fact]
+        public async Task DeleteRole_ValidInput_Success()
+        {
+            _mockRoleManager.Setup(m => m.FindByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync(new IdentityRole()
+                {
+                    Id = "test",
+                    Name = "test"
+                });
+            _mockRoleManager.Setup(m => m.DeleteAsync(It.IsAny<IdentityRole>()))
+                .ReturnsAsync(IdentityResult.Success);
+            var rolesController = new RolesController(_mockRoleManager.Object);
+            var result = await rolesController.DeleteRole("test");
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task DeleteRole_ValidInput_Failed()
+        {
+            _mockRoleManager.Setup(m => m.FindByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync(new IdentityRole()
+                {
+                    Id = "test",
+                    Name = "test"
+                });
+            _mockRoleManager.Setup(m => m.DeleteAsync(It.IsAny<IdentityRole>()))
+                .ReturnsAsync(IdentityResult.Failed(new IdentityError[] { }));
+            var rolesController = new RolesController(_mockRoleManager.Object);
+            var result = await rolesController.DeleteRole("test");
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
 
 
     }
