@@ -1,9 +1,9 @@
 ﻿using GoZone.BackendServer.Controllers;
 using GoZone.ViewModels;
 using GoZone.ViewModels.Systems;
-using KnowledgeSpace.BackendServer.UnitTest.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MockQueryable.Moq;
 using Moq;
 
 namespace GoZone.BackendServer.UnitTest.Controllers
@@ -64,9 +64,8 @@ namespace GoZone.BackendServer.UnitTest.Controllers
         [Fact]
         public async Task GetRoles_HasData_ReturnSuccess()
         {
-            var roles = _roleSources.AsAsyncQueryable();
             _mockRoleManager.Setup(m => m.Roles)
-                .Returns(roles);
+                .Returns(_roleSources.AsQueryable().BuildMock());
             var rolesController = new RolesController(_mockRoleManager.Object);
             var result = await rolesController.GetRoles();
             var okResult = result as OkObjectResult;
@@ -87,9 +86,8 @@ namespace GoZone.BackendServer.UnitTest.Controllers
         [Fact]
         public async Task GetRolesPaging_NoFillter_ReturnSuccess()
         {
-            var roles = _roleSources.AsAsyncQueryable();
             _mockRoleManager.Setup(m => m.Roles)
-                .Returns(roles);
+                .Returns(_roleSources.AsQueryable().BuildMock());
             var rolesController = new RolesController(_mockRoleManager.Object);
             var result = await rolesController.GetRolesPaging(null,1,2);
             var okResult = result as OkObjectResult;
@@ -101,9 +99,8 @@ namespace GoZone.BackendServer.UnitTest.Controllers
         [Fact]
         public async Task GetRolesPaging_HasFillter_ReturnSuccess()
         {
-            var roles = _roleSources.AsAsyncQueryable();
             _mockRoleManager.Setup(m => m.Roles)
-                .Returns(roles);
+                .Returns(_roleSources.AsQueryable().BuildMock());
             var rolesController = new RolesController(_mockRoleManager.Object);
             var result = await rolesController.GetRolesPaging("test3", 1, 2);
             var okResult = result as OkObjectResult;
@@ -122,7 +119,6 @@ namespace GoZone.BackendServer.UnitTest.Controllers
         [Fact]
         public async Task GetById_HasData_ReturnSuccess()
         {
-            var roles = _roleSources.AsAsyncQueryable();
             _mockRoleManager.Setup( m => m.FindByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(new IdentityRole()
                 {

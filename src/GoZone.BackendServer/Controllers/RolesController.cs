@@ -21,6 +21,9 @@ namespace GoZone.BackendServer.Controllers
         [HttpPost]
         public async Task<IActionResult> PostRole(RoleVm roleVm)
         {
+            if(!ModelState.IsValid) { 
+                return BadRequest(ModelState);
+            }
             var role = new IdentityRole()
             {
                 Id = roleVm.Id,
@@ -45,17 +48,17 @@ namespace GoZone.BackendServer.Controllers
         [HttpGet]
         public async Task<IActionResult> GetRoles()
         {
-            var roles = await _roleManager.Roles.ToListAsync();
-            var roleVms = roles.Select(m => new RoleVm()
+            var roles = _roleManager.Roles;
+            var roleVms = await roles.Select(m => new RoleVm()
                 {
                     Id = m.Id,
                     Name = m.Name
-                });
+                }).ToListAsync();
             return Ok(roleVms);
         }
 
         // URL: GET api/roles/?filter={filter}&page=1&pagesize=10
-        [HttpGet]
+        [HttpGet("Filter")]
         public async Task<IActionResult> GetRolesPaging(string filter,int page = 1, int pageSize = 10)
         {
             var query = _roleManager.Roles;
@@ -98,6 +101,10 @@ namespace GoZone.BackendServer.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRole(string id, [FromBody]RoleVm roleVm)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (id != roleVm.Id)
                 return BadRequest();
             var role = await _roleManager.FindByIdAsync(id);
