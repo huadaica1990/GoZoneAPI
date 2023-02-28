@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using GoZone.ViewModels.Systems;
 using Microsoft.EntityFrameworkCore;
 using GoZone.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoZone.BackendServer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("Bearer")]
     public class RolesController : ControllerBase
     {
         private readonly RoleManager<IdentityRole> _roleManager;

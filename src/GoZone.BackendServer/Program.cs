@@ -2,8 +2,10 @@ using FluentValidation.AspNetCore;
 using GoZone.BackendServer.Data;
 using GoZone.BackendServer.Data.Entities;
 using GoZone.BackendServer.IdentityServer;
+using GoZone.BackendServer.Services;
 using GoZone.ViewModels.Systems;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -19,7 +21,6 @@ builder.Host.UseSerilog();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
-builder.Services.AddRazorPages();
 //2. Setup idetntity
 builder.Services.AddIdentity<AppUser, IdentityRole>()
                .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -33,7 +34,8 @@ builder.Services.AddIdentityServer(options =>
 .AddInMemoryApiResources(Config.Apis)
 .AddInMemoryClients(Config.Clients)
 .AddInMemoryIdentityResources(Config.Ids)
-.AddAspNetIdentity<AppUser>();
+.AddAspNetIdentity<AppUser>()
+.AddDeveloperSigningCredential();
 builder.Services.Configure<IdentityOptions>(options =>
 {
     // Password settings
@@ -54,38 +56,88 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 // Add services to the container.
-builder.Services.AddControllersWithViews().AddFluentValidation(m => m.RegisterValidatorsFromAssemblyContaining<RoleVmValidator>());
+builder.Services.AddControllersWithViews()
+    .AddFluentValidation(m => m.RegisterValidatorsFromAssemblyContaining<RoleVmValidator>());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddAuthentication()
+   .AddLocalApi("Bearer", option =>
+   {
+       option.ExpectedScope = "api.gozone";
+   });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Bearer", policy =>
+    {
+        policy.AddAuthenticationSchemes("Bearer");
+        policy.RequireAuthenticatedUser();
+    });
+});
+
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AddAreaFolderRouteModelConvention("Identity", "/Account/", model =>
+    {
+        foreach (var selector in model.Selectors)
+        {
+            var attributeRouteModel = selector.AttributeRouteModel;
+            attributeRouteModel.Order = -1;
+            attributeRouteModel.Template = attributeRouteModel.Template.Remove(0, "Identity".Length);
+        }
+    });
+});
+builder.Services.AddTransient<DbInitializer>();
+builder.Services.AddTransient<IEmailSender, EmailSenderService>();
 builder.Services.AddSwaggerGen(m =>
 {
     m.SwaggerDoc("v1", new OpenApiInfo { Title = "GoZone Api", Version = "v1" });
+    m.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.OAuth2,
+        Flows = new OpenApiOAuthFlows
+        {
+            Implicit = new OpenApiOAuthFlow
+            {
+                AuthorizationUrl = new Uri(builder.Configuration["AuthorityUrl"]+"/connect/authorize"),
+                Scopes = new Dictionary<string, string> { { "api.gozone", "GoZone API" } }
+            },
+        },
+    });
+    m.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+            },
+            new List<string>{ "api.gozone" }
+        }
+    });
 });
-builder.Services.AddTransient<DbInitializer>();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
-    app.MapRazorPages();
-    app.UseSwagger();
-    app.UseSwaggerUI(m =>
-    {
-        m.SwaggerEndpoint("/swagger/v1/swagger.json", "GoZone Api V1");
-    });
+    app.UseDeveloperExceptionPage();
 }
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseIdentityServer();
 app.UseAuthorization();
-//app.MapDefaultControllerRoute();
-app.MapControllerRoute(
-    name: "areaRoute",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapDefaultControllerRoute();
+    endpoints.MapRazorPages();
+});
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseSwagger();
+app.UseSwaggerUI(m =>
+{
+    m.OAuthClientId("swagger");
+    m.SwaggerEndpoint("/swagger/v1/swagger.json", "GoZone Api V1");
+});
 
 using (var scope = app.Services.CreateScope())
 {
