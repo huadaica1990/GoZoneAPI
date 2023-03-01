@@ -58,8 +58,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews()
     .AddFluentValidation(m => m.RegisterValidatorsFromAssemblyContaining<RoleVmValidator>());
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddAuthentication()
    .AddLocalApi("Bearer", option =>
    {
@@ -98,7 +97,7 @@ builder.Services.AddSwaggerGen(m =>
         {
             Implicit = new OpenApiOAuthFlow
             {
-                AuthorizationUrl = new Uri(builder.Configuration["AuthorityUrl"]+"/connect/authorize"),
+                AuthorizationUrl = new Uri("https://localhost:5000/connect/authorize"),
                 Scopes = new Dictionary<string, string> { { "api.gozone", "GoZone API" } }
             },
         },
@@ -121,10 +120,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
-app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseRouting();
 app.UseIdentityServer();
+app.UseAuthentication();
+app.UseHttpsRedirection();
+app.UseRouting();
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
