@@ -12,10 +12,16 @@ namespace GoZone.BackendServer.IdentityServer
                 new IdentityResources.Profile()
           };
 
-        public static IEnumerable<ApiResource> Apis =>
+        public static IEnumerable<ApiResource> ApiRs =>
             new ApiResource[]
             {
                 new ApiResource("api.gozone", "GoZone API")
+            };
+
+        public static IEnumerable<ApiScope> Apis =>
+            new ApiScope[]
+            {
+                new ApiScope("api.gozone", "GoZone API")
             };
 
         public static IEnumerable<Client> Clients =>

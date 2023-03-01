@@ -7,6 +7,7 @@ using GoZone.ViewModels.Systems;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
@@ -31,9 +32,10 @@ builder.Services.AddIdentityServer(options =>
     options.Events.RaiseFailureEvents = true;
     options.Events.RaiseSuccessEvents = true;
 })
-.AddInMemoryApiResources(Config.Apis)
+.AddInMemoryApiResources(Config.ApiRs)
 .AddInMemoryClients(Config.Clients)
 .AddInMemoryIdentityResources(Config.Ids)
+.AddInMemoryApiScopes(Config.Apis)
 .AddAspNetIdentity<AppUser>()
 .AddDeveloperSigningCredential();
 builder.Services.Configure<IdentityOptions>(options =>
