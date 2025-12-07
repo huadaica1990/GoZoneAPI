@@ -65,7 +65,7 @@ params: name
 ===============================
 4) PAGE (trang / trang tĩnh)
 ===============================
-DÙNG KHI: “trang”, “page”, “trang tĩnh”, “landing page”, “giới thiệu”, “liên hệ”, “chính sách”, “home page”.
+DÙNG KHI: “trang”, “page”, “trang tĩnh”, “giới thiệu”, “liên hệ”, “chính sách”.
 
 4.1. page.delete  
 params: name
@@ -80,7 +80,7 @@ params: name
 ===============================
 5) THEME / GIAO DIỆN (UI Layout)
 ===============================
-DÙNG KHI: “giao diện”, “theme”, “layout”, “block”, “section”, “banner”, “slider”, “hero”.
+DÙNG KHI: “giao diện”, “theme”, “layout”, “slider”, “trang chủ”, “header”, “footer”, “đầu trang”, “chân trang”, “nội dung mặc định”.
 
 5.1. theme.update  
 params: name, field
@@ -107,7 +107,7 @@ params: name
 ===============================
 7) SETTING (cấu hình)
 ===============================
-DÙNG KHI: “cấu hình”, “setting”, “thay logo”, “favicon”, “GA4”, “Google Ads”, “API Key”, “hotline website”, “email website”,  “địa chỉ”, “bản đồ”, “map”, “mạng xã hội”, “facebook”, “zalo”, “tiktok”.
+DÙNG KHI: “cấu hình”, “setting”, “schema”, “favicon”, “GA4”, “Google Ads”, “API Key”, “hotline website”, “email website”, “địa chỉ”, “bản đồ”, “map”, “iframe”, “mạng xã hội”, “facebook”, “zalo”, “tiktok”.
 
 7.1. setting.update  
 params: name, value
@@ -115,40 +115,48 @@ params: name, value
 7.2. setting.search  
 params: name
 
+===============================
+8) BANNER
+===============================
+DÙNG KHI: “popup”, “thay logo”, “favicon”, “quảng cáo”.
+
+8.1. banner.update  
+params: name, value
+
+8.2. banner.search  
+params: name
 
 ===============================
-8) LANGUAGE (ngôn ngữ)
+9) LANGUAGE (ngôn ngữ)
 ===============================
 DÙNG KHI: “ngôn ngữ”, “language”.
 
-8.1. language.update  
+9.1. language.update  
 params: name, field, value
 
-8.2. language.search  
+9.2. language.search  
 params: name
 
-
 ===============================
-9) STORE (cửa hàng / chi nhánh)
+10) STORE (cửa hàng / chi nhánh)
 ===============================
 DÙNG KHI: "cửa hàng", "store", "chi nhánh", "địa điểm", "cơ sở".
 
-9.1. store.delete  
+10.1. store.delete  
 params: name
 
-9.2. store.update  
+10.2. store.update  
 params: name, field, value
 
-9.3. store.search  
+10.3. store.search  
 params: name
 
-
 ===============================
-10) SEARCH-ALL (fallback khi không chắc chắn)
+11) SEARCH-ALL (fallback khi không chắc chắn)
 ===============================
 DÙNG KHI: Câu nói mơ hồ hoặc không rõ thuộc nhóm nào.
 
-10.1. search.all  
+11.1. search.all  
 params: name
 
 humanDescription: "Không chắc nhóm phù hợp. Cần search-all để kiểm tra toàn bộ hệ thống."
