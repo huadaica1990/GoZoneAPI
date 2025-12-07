@@ -78,7 +78,7 @@ params: name
 ===============================
 5) THEME / GIAO DIỆN (UI Layout)
 ===============================
-DÙNG KHI: “giao diện”, “theme”, “layout”, “slider”, “trang chủ”, “header”, “footer”, “đầu trang”, “chân trang”, “nội dung mặc định”.
+DÙNG KHI: “giao diện”, “theme”, “layout”, “slider”, “trang chủ”, “header”, “footer”, “đầu trang”, “chân trang”, “nội dung mặc định”, “hotline website”, “email website”, “địa chỉ”, “bản đồ”, “map”, “iframe”, “mạng xã hội”, “social”, “facebook”, “zalo”, “tiktok”.
 
 5.1. theme.update  
 params: name, field
@@ -103,10 +103,10 @@ params: name
 ===============================
 7) SETTING (cấu hình)
 ===============================
-DÙNG KHI: “cấu hình”, “setting”, “schema”, “favicon”, “GA4”, “Google Ads”, “API Key”, “hotline website”, “email website”, “địa chỉ”, “bản đồ”, “map”, “iframe”, “mạng xã hội”, “social”, “facebook”, “zalo”, “tiktok”.
+DÙNG KHI: “cấu hình”, “setting”, “schema”, “GA4”, “share avatar”, “API Key”, “SEO”, “chèn code”, “sitemap”, “robots”, “llms”, “style”, “css”, “js”, “javascript”, “server”, “email admin”, “bbc”, “bank”, “ngân hàng”, “thanh toán”, “google analytics”, “capcha”, “cache”, “phân trang”.
 
 7.1. setting.update  
-params: name, value
+params: name, field
 
 7.2. setting.search  
 params: name
