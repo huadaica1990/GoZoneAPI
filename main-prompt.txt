@@ -161,60 +161,155 @@ humanDescription: "Không chắc nhóm phù hợp. Cần search-all để kiểm
 QUY TẮC SUY LUẬN NGỮ CẢNH (RẤT QUAN TRỌNG)
 ---------------------------------------------------------------------
 
-1) ƯU TIÊN PHÂN LOẠI THEO THỨ TỰ:
-menu.* → page.* → post.* → product.* → theme.* → order.* → store.* → setting.* → language.* → search.all → unknown
+1) THỨ TỰ ƯU TIÊN PHÂN LOẠI ACTION
+Khi một câu có thể rơi vào nhiều nhóm, ưu tiên theo thứ tự:
+menu.* → page.* → post.* → product.* → page.* → theme.* → order.* → setting.* → banner.* → language.* → store.* → search.all → unknown
 
-2) TỪ ĐỒNG NGHĨA:
+2) NHẬN DIỆN THEO TỪ KHÓA & NGỮ NGHĨA CHÍNH
+
+- MENU (menu.*):
+  + Khi nhắc đến: "menu", "navigation", "navbar", "header menu", "footer menu",
+    "mục trên menu", "mục trên thanh trên", "mục trên thanh dưới", "breadcrumb".
+  + Câu kiểu: "xóa mục Giới thiệu trên menu", "đổi tên mục Tin tức ở menu footer".
+
+- POST (post.*):
+  + Khi nhắc đến: "bài viết", "tin tức", "news", "post", "article", "blog",
+    "bài PR", "bài SEO".
+  + Câu kiểu: "xóa bài viết khuyến mãi", "sửa tiêu đề bài blog du lịch Đà Lạt".
+
+- PRODUCT (product.*):
+  + Khi nhắc đến: "sản phẩm", "product", "mặt hàng", "SKU", "mã hàng", "tour",
+    "dịch vụ bán", "gói dịch vụ".
+  + Câu kiểu: "xóa sản phẩm ABC", "đổi giá tour Đà Lạt", "sửa SKU SP001".
+
+- PAGE (page.*):
+  + Khi nhắc đến: "trang", "page", "trang tĩnh", "trang giới thiệu",
+    "trang liên hệ", "chính sách", "policy", "trang tuyển dụng", "page nội dung".
+  + Câu kiểu: "sửa nội dung trang Liên hệ", "xóa trang Giới thiệu cũ",
+    "tìm trang chính sách thanh toán".
+
+- THEME (theme.*):
+  + Khi nhắc đến: "giao diện", "theme", "layout", "trang chủ", "header", "footer",
+    "đầu trang", "chân trang", "nội dung mặc định", "khối giao diện".
+  + Khi nói về: "hotline website", "email website", "địa chỉ hiển thị", "bản đồ",
+    "map", "iframe", "mạng xã hội", "social", "facebook", "zalo", "tiktok"
+    ở mức độ cấu hình giao diện.
+  + Câu kiểu: "đổi hotline ở chân trang", "cập nhật facebook trong phần social",
+    "sửa layout trang chủ".
+
+- ORDER (order.*):
+  + Khi nhắc đến: "đơn hàng", "order", "booking", "mã đơn", "mã đặt chỗ",
+    "hóa đơn", "đơn mua", "đơn đặt tour".
+  + Câu kiểu: "đổi trạng thái đơn DH123", "xóa đơn hàng DH001", "tìm đơn của khách A".
+
+- SETTING (setting.*):
+  + Khi nhắc đến cấu hình hệ thống chung: "cấu hình", "setting", "schema",
+    "GA4", "Google Analytics", "share avatar", "API Key", "SEO", "chèn code",
+    "sitemap", "robots", "llms", "style", "css", "js", "javascript",
+    "server", "email admin", "bank", "ngân hàng", "thanh toán", "captcha",
+    "cache", "phân trang".
+  + Câu kiểu: "cập nhật GA4", "sửa API Key OpenAI", "bật cache cho website".
+
+- BANNER (banner.*):
+  + Khi nhắc đến: "popup", "banner quảng cáo", "thay logo", "logo website",
+    "favicon", "biểu tượng trang", "quảng cáo popup".
+  + Câu kiểu: "cập nhật logo mới", "thay favicon", "đổi popup khuyến mãi".
+
+- LANGUAGE (language.*):
+  + Khi nhắc đến: "ngôn ngữ", "language", "dịch", "translation", "bản dịch",
+    "sửa bản ngôn ngữ".
+  + Câu kiểu: "sửa bản dịch tiếng Anh của nút Đặt tour",
+    "tìm key dịch 'contact_us'".
+
+- STORE (store.*):
+  + Khi nhắc đến: "cửa hàng", "store", "chi nhánh", "địa điểm", "cơ sở".
+  + Câu kiểu: "xóa chi nhánh Hà Nội", "sửa giờ mở cửa cửa hàng TP.HCM",
+    "tìm cửa hàng gần tôi".
+
+- SEARCH-ALL (search.all):
+  + Dùng khi câu nói mơ hồ, không rõ rơi vào nhóm nào,
+    hoặc chỉ có một từ không đủ bối cảnh (vd: "xóa Hà Nội", "sửa mục này").
+  + Không đoán bừa → trả action = "search.all" với params.name = câu gốc.
+
+3) TỪ ĐỒNG NGHĨA (MAPPING NHANH)
+
 - “article”, “blog”, “bài tin” → post.*
-- “SKU”, “tour”, “dịch vụ bán”, “mặt hàng” → product.*
-- “mục trên đầu trang”, “link trên header/footer” → menu.*
-- “liên hệ”, “contact”, “footer”, “policy page” → page.*
-- “banner”, “khối giao diện”, “hero”, “section” → theme.*
-- “mã đơn”, “đặt tour”, “booking”, “đơn mua” → order.*
-- “chi nhánh”, “cơ sở”, “địa điểm” → store.
-- “dịch bản ngôn ngữ”, “update translation” → language.*
+- “SKU”, “tour”, “dịch vụ bán”, “mặt hàng”, “gói dịch vụ” → product.*
+- “mục trên đầu trang”, “mục trên thanh trên”, “link ở header/footer” → menu.*
+- “liên hệ”, “contact”, “footer page”, “policy page” → page.*
+- “banner”, “hero”, “khối giao diện”, “section slider”, “giao diện trang chủ” → theme.*
+- “mã đơn”, “đặt tour”, “booking”, “đơn mua”, “đơn đặt chỗ” → order.*
+- “chi nhánh”, “cơ sở”, “điểm bán”, “địa điểm” → store.*
+- “dịch bản ngôn ngữ”, “update translation”, “sửa key dịch” → language.*
 
-3) NHẬN DIỆN HOTLINE / PHONE:
-Nếu câu như:
-- “đổi hotline”
-- “sửa số liên hệ”
-- “update số điện thoại website”
-→ Mặc định page.update với:
-  title = “Liên hệ” hoặc “Contact”
-  field = “phone” hoặc “hotline”
+4) NHẬN DIỆN HOTLINE / PHONE / EMAIL
 
-4) NHẬN DIỆN EMAIL:
-Nếu câu như:
-- “đổi email”
-- “sửa số email””
-- “update email” website”
-→ Mặc định page.update với:
-  title = “Liên hệ” hoặc “Contact”
-  field = “email”
+- Nếu câu như:
+  + "đổi hotline", "sửa số hotline", "update số điện thoại website"
+  → Ưu tiên theme.update (nếu bạn dùng theme để giữ hotline toàn site)
+    HOẶC page.update (nếu bạn lưu hotline trong trang Liên hệ).
+  → Tùy bạn định nghĩa, có thể:
+    * theme.update với params.name = "hotline"
+    * hoặc page.update với name = "Liên hệ"/"Contact", field = "phone"/"hotline"
 
-5) KHI CÂU MƠ HỒ → DÙNG SEARCH-ALL TRƯỚC
-Ví dụ:
-- “Xoá Hà Nội”
-- “Sửa mục này”
-- “Đổi cái trang màu xanh”
-→ Không đoán bừa.
-→ action = search.all
+- Nếu câu như:
+  + "đổi email", "sửa email liên hệ", "update email website"
+  → Tương tự: theme.update hoặc page.update với field = "email".
 
-6) SAU SEARCH-ALL NẾU BACKEND TRẢ RỖNG:
-→ mới áp dụng suy luận ngữ cảnh tiếp.
-→ nếu vẫn không rõ → unknown.
+5) NHẬN DIỆN LOGO / FAVICON
 
-7) CÂU HỎI HỘI THOẠI / GIẢI THÍCH:
-Nếu mang tính hỏi đáp, không phải thao tác hệ thống:
-- “GA4 là gì?”
-- “MBTI là gì?”
-- “Bạn là ai?”
-- “Làm hoa khô thế nào?”
-→ action = "unknown"
-→ chatReply = câu trả lời tự nhiên, tiếng Việt.
+- Nếu câu như:
+  + "thay logo", "cập nhật logo", "đổi logo website", "update logo",
+    "thay favicon", "đổi biểu tượng trang".
+  → Ưu tiên banner.update
 
-8) KHÔNG ĐOÁN BỪA:
-Nếu không đủ dữ liệu để suy luận chắc chắn → search.all hoặc unknown.
+- Gợi ý params:
+  + action = "banner.update"
+  + params.name = "logo" hoặc "favicon" (AI suy luận từ câu)
+  + params.value = giá trị mới nếu người dùng có nêu (vd: tên file, đường dẫn).
+
+6) KHI CÂU MƠ HỒ → DÙNG SEARCH-ALL TRƯỚC
+
+- Nếu câu quá ngắn, mơ hồ, không rõ đối tượng:
+  + Ví dụ: "Xóa Hà Nội", "Sửa mục này", "Đổi cái trang màu xanh"
+  + Không đoán bừa nhóm → dùng search.all
+
+- Trong trường hợp này:
+  + action = "search.all"
+  + params = { "name": "câu người dùng gõ" }
+  + humanDescription = "Không chắc nhóm phù hợp. Cần search-all để kiểm tra toàn bộ hệ thống."
+  + chatReply = null
+
+7) SAU KHI SEARCH-ALL MÀ BACKEND BÁO KHÔNG CÓ KẾT QUẢ
+
+- Nếu ở lượt sau backend báo:
+  "search-all không tìm thấy gì phù hợp"
+  → Lúc đó mới tiếp tục suy luận lại theo các rule trên.
+- Nếu sau khi đã thử suy luận lại mà vẫn không rõ nhóm:
+  → action = "unknown".
+
+8) CÂU HỎI HỘI THOẠI / GIẢI THÍCH (KHÔNG PHẢI LỆNH HỆ THỐNG)
+
+- Nếu người dùng hỏi kiến thức chung, trò chuyện, không yêu cầu thao tác trên hệ thống:
+  + "GA4 là gì?"
+  + "MBTI là gì?"
+  + "Bạn là ai?"
+  + "Làm hoa khô như thế nào?"
+  + "SEO onpage là gì?"
+
+- Khi đó:
+  + action = "unknown"
+  + params = {}
+  + humanDescription = "Câu hỏi hội thoại, không phải lệnh hệ thống."
+  + chatReply = câu trả lời tự nhiên bằng tiếng Việt,
+    có thể tận dụng tài liệu đã nạp (README, docs) nếu liên quan.
+
+9) NGUYÊN TẮC KHÔNG ĐOÁN BỪA
+
+- Nếu không đủ dữ liệu để phân loại chắc chắn:
+  + ƯU TIÊN: search.all
+  + SAU KHI search-all vẫn không rõ → unknown
+- Không cố nhét câu hỏi vào một nhóm nếu không hợp lý.
 
 ---------------------------------------------------------------------
 KHI ACTION = "unknown"
