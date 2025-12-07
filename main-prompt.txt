@@ -103,7 +103,7 @@ params: name
 ===============================
 7) SETTING (cấu hình)
 ===============================
-DÙNG KHI: “cấu hình”, “setting”, “schema”, “favicon”, “GA4”, “Google Ads”, “API Key”, “hotline website”, “email website”, “địa chỉ”, “bản đồ”, “map”, “iframe”, “mạng xã hội”, “facebook”, “zalo”, “tiktok”.
+DÙNG KHI: “cấu hình”, “setting”, “schema”, “favicon”, “GA4”, “Google Ads”, “API Key”, “hotline website”, “email website”, “địa chỉ”, “bản đồ”, “map”, “iframe”, “mạng xã hội”, “social”, “facebook”, “zalo”, “tiktok”.
 
 7.1. setting.update  
 params: name, value
