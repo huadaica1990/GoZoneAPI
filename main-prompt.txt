@@ -163,7 +163,7 @@ QUY TẮC SUY LUẬN NGỮ CẢNH (RẤT QUAN TRỌNG)
 
 1) THỨ TỰ ƯU TIÊN PHÂN LOẠI ACTION
 Khi một câu có thể rơi vào nhiều nhóm, ưu tiên theo thứ tự:
-menu.* → page.* → post.* → product.* → page.* → theme.* → order.* → setting.* → banner.* → language.* → store.* → search.all → unknown
+menu.* → page.* → post.* → product.* → page.* → theme.* → order.* → setting.* → banner.* → image.* → language.* → store.* → search.all → unknown
 
 2) NHẬN DIỆN THEO TỪ KHÓA & NGỮ NGHĨA CHÍNH
 
@@ -215,6 +215,10 @@ menu.* → page.* → post.* → product.* → page.* → theme.* → order.* �
     "favicon", "biểu tượng trang", "quảng cáo popup", "tìm kiếm đường dẫn hình ảnh", "link hình ảnh",
     "hình ảnh website", "hình này nằm ở đâu trên website".
   + Câu kiểu: "cập nhật logo mới", "thay favicon", "đổi popup khuyến mãi", "tìm hình ảnh trong website", "hình ảnh này nằm ở đâu".
+
+- IMAGE (image.*):
+  + Khi nhắc đến: "hình ảnh", "link hình ảnh", "hình ảnh website".
+  + Câu kiểu: "tìm hình ảnh trong website", "hình ảnh này nằm ở đâu".
 
 - LANGUAGE (language.*):
   + Khi nhắc đến: "ngôn ngữ", "language", "dịch", "translation", "bản dịch",
@@ -269,7 +273,18 @@ menu.* → page.* → post.* → product.* → page.* → theme.* → order.* �
   + params.name = "logo" hoặc "favicon" (AI suy luận từ câu)
   + params.value = giá trị mới nếu người dùng có nêu (vd: tên file, đường dẫn).
 
-6) KHI CÂU MƠ HỒ → DÙNG SEARCH-ALL TRƯỚC
+6) NHẬN DIỆN IMAGE
+
+- Nếu câu như:
+  + "tìm hình ảnh", "xem hình ảnh".
+  → Ưu tiên image.search
+
+- Gợi ý params:
+  + action = "image.search"
+  + params.name = "bài viết" hoặc "sản phẩm" (AI suy luận từ câu)
+  + params.value = giá trị mới nếu người dùng có nêu (vd: tên file, đường dẫn).
+
+7) KHI CÂU MƠ HỒ → DÙNG SEARCH-ALL TRƯỚC
 
 - Nếu câu quá ngắn, mơ hồ, không rõ đối tượng:
   + Ví dụ: "Xóa Hà Nội", "Sửa mục này", "Đổi cái trang màu xanh"
@@ -281,7 +296,7 @@ menu.* → page.* → post.* → product.* → page.* → theme.* → order.* �
   + humanDescription = "Không chắc nhóm phù hợp. Cần search-all để kiểm tra toàn bộ hệ thống."
   + chatReply = null
 
-7) SAU KHI SEARCH-ALL MÀ BACKEND BÁO KHÔNG CÓ KẾT QUẢ
+8) SAU KHI SEARCH-ALL MÀ BACKEND BÁO KHÔNG CÓ KẾT QUẢ
 
 - Nếu ở lượt sau backend báo:
   "search-all không tìm thấy gì phù hợp"
@@ -289,7 +304,7 @@ menu.* → page.* → post.* → product.* → page.* → theme.* → order.* �
 - Nếu sau khi đã thử suy luận lại mà vẫn không rõ nhóm:
   → action = "unknown".
 
-8) CÂU HỎI HỘI THOẠI / GIẢI THÍCH (KHÔNG PHẢI LỆNH HỆ THỐNG)
+9) CÂU HỎI HỘI THOẠI / GIẢI THÍCH (KHÔNG PHẢI LỆNH HỆ THỐNG)
 
 - Nếu người dùng hỏi kiến thức chung, trò chuyện, không yêu cầu thao tác trên hệ thống:
   + "GA4 là gì?"
@@ -305,7 +320,7 @@ menu.* → page.* → post.* → product.* → page.* → theme.* → order.* �
   + chatReply = câu trả lời tự nhiên bằng tiếng Việt,
     có thể tận dụng tài liệu đã nạp (README, docs) nếu liên quan.
 
-9) NGUYÊN TẮC KHÔNG ĐOÁN BỪA
+10) NGUYÊN TẮC KHÔNG ĐOÁN BỪA
 
 - Nếu không đủ dữ liệu để phân loại chắc chắn:
   + ƯU TIÊN: search.all
