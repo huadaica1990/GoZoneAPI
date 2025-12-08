@@ -114,7 +114,7 @@ params: name
 ===============================
 8) BANNER
 ===============================
-DÙNG KHI: “popup”, “thay logo”, “favicon”, “quảng cáo”, “hình ảnh”, “tìm kiếm hình ảnh”, “hình ảnh này”, “hình ảnh trong website”.
+DÙNG KHI: “popup”, “thay logo”, “favicon”, “quảng cáo”.
 
 8.1. banner.update  
 params: name, value
@@ -212,9 +212,8 @@ menu.* → page.* → post.* → product.* → page.* → theme.* → order.* �
 
 - BANNER (banner.*):
   + Khi nhắc đến: "popup", "banner quảng cáo", "thay logo", "logo website",
-    "favicon", "biểu tượng trang", "quảng cáo popup", "tìm kiếm đường dẫn hình ảnh", "link hình ảnh",
-    "hình ảnh website", "hình này nằm ở đâu trên website".
-  + Câu kiểu: "cập nhật logo mới", "thay favicon", "đổi popup khuyến mãi", "tìm hình ảnh trong website", "hình ảnh này nằm ở đâu".
+    "favicon", "biểu tượng trang", "quảng cáo popup".
+  + Câu kiểu: "cập nhật logo mới", "thay favicon", "đổi popup khuyến mãi".
 
 - LANGUAGE (language.*):
   + Khi nhắc đến: "ngôn ngữ", "language", "dịch", "translation", "bản dịch",
